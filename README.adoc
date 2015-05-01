@@ -1,0 +1,68 @@
+== Description of the problem
+
+With IBM JDK 8, the `java.lang.Integer.toHexString(int)` method sometimes returns a string
+starting with nul characters `'\u0000'`.
+
+The present project is there to demonstrate the issue.
+
+== Steps to reproduce
+
+1. Get IBM JDK 8. I my case, the exact version is
++
+.................
+java -version
+java version "1.8.0"
+Java(TM) SE Runtime Environment (build pxa6480-20150129_02)
+IBM J9 VM (build 2.8, JRE 1.8.0 Linux amd64-64 Compressed References 20150116_231420 (JIT enabled, AOT enabled)
+J9VM - R28_Java8_GA_20150116_2030_B231420
+JIT  - tr.r14.java_20150109_82886.02
+GC   - R28_Java8_GA_20150116_2030_B231420_CMPRSS
+J9CL - 20150116_231420)
+JCL - 20150123_01 based on Oracle jdk8u31-b12
+.................
++
+2. Get the source of the present project
++
+.................
+git clone https://github.com/ppalaga/ibmjdk-integer-to-string-nul-chars.git
+.................
+
+3. Build the source
++
+.................
+cd ibmjdk-integer-to-string-nul-chars
+mvn clean install
+.................
+
+4. Run the code
++
+.................
+java -jar target/ibmjdk-integer-to-string-nul-chars-1.0.0-SNAPSHOT.jar ibmjdk.IntegerToString
+.................
+
+5. The output starts with some system properties
++
+.................
+java.vendor = IBM Corporation
+java.version = 1.8.0
+os.arch = amd64
+os.name = Linux
+os.version = 3.17.7-300.fc21.x86_64
+.................
++
+And continues with the test output in a loop. First the output is expected:
++
+.................
+timeLow = 263722706, hex.length = 7, hex nul pos = -1, hex = 'fb816d2'
+timeLow = 263722706, hex.length = 7, hex nul pos = -1, hex = 'fb816d2'
+[...]
+.................
++
+But then after a couple of seconds, it changes to something unexpected:
++
+.................
+timeLow = 264487270, hex.length = 11, hex nul pos = 0, hex = '
+.................
++
+Note the length 11 and the fact that a nul character `'\u0000'` was found at offset `0`.
+In fact the hex string starts with four nul characters.

@@ -29,12 +29,21 @@ package ibmjdk;
 
 /**
  *
+ * See the README file in the top directory of the project.
+ *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  *
  */
 public class IntegerToString {
 
     public static void main(String[] args) {
+
+        printSysProp("java.vendor");
+        printSysProp("java.version");
+        printSysProp("os.arch");
+        printSysProp("os.name");
+        printSysProp("os.version");
+
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
 
             int timeLow = (int) System.currentTimeMillis() & 0xFFFFFFFF;
@@ -48,6 +57,13 @@ public class IntegerToString {
             }
 
         }
+    }
+
+    /**
+     *
+     */
+    private static void printSysProp(String prop) {
+        System.out.println(prop + " = " + System.getProperty(prop));
     }
 
 }
