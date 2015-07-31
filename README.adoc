@@ -1,3 +1,8 @@
+=== Update 2015-07-31
+
+The issue described here was fixed in IBM JDK 8.0-1.10 (8, release 1, fixpack 10) which is now http://www.ibm.com/developerworks/java/jdk/java8/[publicly available] 
+(via https://twitter.com/DanHeidinga)
+
 == Description of the problem
 
 With IBM JDK 8, the `java.lang.Integer.toHexString(int)` method sometimes returns a string
